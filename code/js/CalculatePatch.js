@@ -13,15 +13,15 @@ function requestDynamicContent() {
     });    
 }
 
-function injectDynamicContent(content) {
+function injectDynamicContent(dynamicContent) {
     $('[data-rs="0"]').each(function () {
         var uid = $(this).attr("data-rid");
 
         var attributeWithUid = "[data-rid='" + uid + "']";
 
-        var dynamicElement = $(content).find(attributeWithUid);
+        var dynamicElement = $(dynamicContent).filter(attributeWithUid);
         if (dynamicElement != undefined) {
-            $(this).replaceWith(dynamicElement.prevObject);
+            $(this).replaceWith(dynamicElement);
         }
     });
 }

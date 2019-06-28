@@ -11,14 +11,20 @@ namespace Feature.CDN.Pipelines
         {
             if (Context.Item == null
                 || !Context.PageMode.IsNormal
-                || Context.Site.Name != "website")
+                || Context.Site.Name != "website"
+                || string.IsNullOrEmpty(args.Rendering.RenderingItemPath))
                 return;
 
-            if (args.IsCustomized)
+            var renderingItem = Context.Data.Database.GetItem(args.Rendering.RenderingItemPath);
+            if (renderingItem != null)
             {
-                var getDynamicContent = Context.Request.QueryString["GetDynamicContent"] == "1";
+                if (args.IsCustomized || (renderingItem.Fields["Is Dynamic Rendering"] != null && renderingItem.Fields["Is Dynamic Rendering"].Value == "1"))
+                {
+                    var getDynamicContent = Context.Request.QueryString["GetDynamicContent"] == "1";
 
-                HttpContext.Current.Items["MarkedRenderingId"] = new Tuple<string, bool>(args.Rendering.UniqueId.ToString(), getDynamicContent);
+                    HttpContext.Current.Items["MarkedRenderingId"] =
+                        new Tuple<string, bool>(args.Rendering.UniqueId.ToString(), getDynamicContent);
+                }
             }
         }
     }
