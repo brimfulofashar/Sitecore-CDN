@@ -18,7 +18,7 @@ namespace Feature.CDN.Pipelines
             var renderingItem = Context.Data.Database.GetItem(args.Rendering.RenderingItemPath);
             if (renderingItem != null)
             {
-                if (args.IsCustomized || (renderingItem.Fields["Is Dynamic Rendering"] != null && renderingItem.Fields["Is Dynamic Rendering"].Value == "1"))
+                if (args.IsCustomized || (renderingItem.Fields["Cacheable"] != null && renderingItem.Fields["Cacheable"].Value != "1"))
                 {
                     var getDynamicContent = Context.Request.QueryString["GetDynamicContent"] == "1";
 
