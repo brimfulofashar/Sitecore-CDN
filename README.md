@@ -5,7 +5,7 @@ Sitecore plugin to allow personalisation and tracking when used with a CDN
 
 2 - Configure renderings like:
 
-![](CDN configuration.jpg)
+![CDN Configuration](https://github.com/brimfulofashar/Sitecore-CDN/blob/master/CDN%20configuration.jpg)
 
 3 - Apply javascript and (optionally) the css to the layout
 
