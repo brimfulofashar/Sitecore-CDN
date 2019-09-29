@@ -106,11 +106,12 @@
   <ItemGroup>
     <Content Include="App_Config\Include\Feature\Feature.CDN.config" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
-    <Content Include="css\style.css" />
-    <Content Include="js\CalculatePatch.js" />
+    <Content Include="styles\style.css" />
+    <Content Include="scripts\ApplyPatch.js" />
     <None Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Filters\RemoveStaticMarkupFilter.cs" />
     <Compile Include="Pipelines\CacheControl.cs" />
     <Compile Include="Pipelines\StripContentProcessor.cs" />

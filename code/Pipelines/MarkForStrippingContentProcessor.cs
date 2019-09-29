@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using Sitecore;
 using Sitecore.Mvc.Analytics.Pipelines.Response.CustomizeRendering;
 
@@ -9,21 +8,17 @@ namespace Feature.CDN.Pipelines
     {
         public override void Process(CustomizeRenderingArgs args)
         {
-            if (Context.Item == null
-                || !Context.PageMode.IsNormal
-                || Context.Site.Name != "website"
-                || string.IsNullOrEmpty(args.Rendering.RenderingItemPath))
-                return;
-
-            var renderingItem = Context.Data.Database.GetItem(args.Rendering.RenderingItemPath);
-            if (renderingItem != null)
+            if (Context.Item != null
+                && Context.PageMode.IsNormal
+                && Context.Site.Name.IsPublicWebsite()
+                && args.Rendering.Item != null)
             {
-                if (args.IsCustomized || (renderingItem.Fields["Cacheable"] != null && renderingItem.Fields["Cacheable"].Value != "1"))
+                // todo: clarify with Ash?
+                //if (args.IsCustomized || (args.Rendering.Item.Fields["Cacheable"] != null && args.Rendering.Item.Fields["Cacheable"].Value != "1"))
+                if (args.IsCustomized)
                 {
-                    var getDynamicContent = Context.Request.QueryString["GetDynamicContent"] == "1";
-
-                    HttpContext.Current.Items["MarkedRenderingId"] =
-                        new Tuple<string, bool>(args.Rendering.UniqueId.ToString(), getDynamicContent);
+                    // todo: improve
+                    HttpContext.Current.Items[$"MarkedRenderingId{args.Rendering.UniqueId}"] = args.Rendering.UniqueId;
                 }
             }
         }
