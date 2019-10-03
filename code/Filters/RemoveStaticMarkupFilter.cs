@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
 using HtmlAgilityPack;
 
 namespace Feature.CDN.Filters
@@ -26,7 +23,11 @@ namespace Feature.CDN.Filters
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
             StringBuilder output = new StringBuilder();
-            foreach (HtmlNode node in htmlDoc.DocumentNode.DescendantsAndSelf().Where(x => x.Attributes.Any(y => y.Name == "data-rs" && y.Value== "1")).ToList())
+            
+            // todo: possible nesting issues
+            foreach (HtmlNode node in htmlDoc.DocumentNode.DescendantsAndSelf()
+                .Where(x => x.Attributes
+                    .Any(y => y.Name == "data-rs" && y.Value== "1")))
             {
                 output.AppendLine(node.OuterHtml);
             }

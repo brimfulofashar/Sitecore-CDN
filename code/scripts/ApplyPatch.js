@@ -1,16 +1,22 @@
-﻿function initialise() {
-//    setTimeout(function () { requestDynamicContent() }, 1000);
-    requestDynamicContent();
-}
+﻿$(document).ready(function () {
+    var urlParams = new URLSearchParams(window.location.search);
+
+    if (!urlParams.has('skippatch')) {
+        requestDynamicContent();
+    }    
+});
 
 function requestDynamicContent() {
-    var getDynamicContentUrl = window.location.href + "/?GetDynamicContent=1";    
+    var getDynamicContentUrl = window.location.href;
+    getDynamicContentUrl = getDynamicContentUrl + (window.location.href.includes('?') ? "&" : "?");
+    getDynamicContentUrl = getDynamicContentUrl + "GetDynamicContent=1";
+
     $.ajax({
         url: getDynamicContentUrl,
         success: function (result) {
             injectDynamicContent(result);
         }
-    });    
+    });
 }
 
 function injectDynamicContent(dynamicContent) {
@@ -20,7 +26,7 @@ function injectDynamicContent(dynamicContent) {
         var attributeWithUid = "[data-rid='" + uid + "']";
 
         var dynamicElement = $(dynamicContent).filter(attributeWithUid);
-        if (dynamicElement != undefined) {
+        if (dynamicElement) {
             $(this).replaceWith(dynamicElement);
         }
     });
