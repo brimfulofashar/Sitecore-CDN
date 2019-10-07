@@ -22,38 +22,50 @@ namespace Feature.CDN.Pipelines
                 && args.Rendering.RenderingType != "Layout"
                 && HttpContext.Current.Items[$"RenderingIsPersonalised"] != null)
             {
-                
-                var renderingIsPersonalised = System.Convert.ToBoolean(HttpContext.Current.Items[$"RenderingIsPersonalised"]);
 
                 var existingHtmlString = args.Writer.ToString().Trim();
                 if (!string.IsNullOrEmpty(existingHtmlString))
                 {
                     var htmlDoc = new HtmlDocument();
                     htmlDoc.LoadHtml(existingHtmlString);
-
-                    if (HttpContext.Current.Items["RenderingPlaceholderKey"] != null && HttpContext.Current.Items["RenderingPlaceholderKey"].ToString().Contains(args.Rendering.Placeholder))
                     {
-                        ((StringWriter)args.Writer).GetStringBuilder().Clear();
-                        args.Writer.Write(existingHtmlString);
+                        var renderingIsPersonalised = System.Convert.ToBoolean(HttpContext.Current.Items[$"RenderingIsPersonalised"]);
+                        HtmlNode rootNode = htmlDoc.DocumentNode.FirstChild;
 
-                        return;
+                        rootNode.Attributes.Add("data-renderingId", args.Rendering.UniqueId.ToString());
+                        rootNode.Attributes.Add("data-renderingIsPersonalised", renderingIsPersonalised ? "1" : "0");
+
+                        if (!Extensions.IsContextRequestForDynamicData())
+                        {
+                            if (HttpContext.Current.Items["RenderingPlaceholderKey"] != null && HttpContext.Current.Items["RenderingPlaceholderKey"].ToString().Contains(args.Rendering.Placeholder))
+                            {
+                                ((StringWriter) args.Writer).GetStringBuilder().Clear();
+                                args.Writer.Write(existingHtmlString);
+
+                                return;
+                            }
+
+                            if (renderingIsPersonalised)
+                            {
+                                rootNode.InnerHtml = SpinnerHtml;
+                            }
+
+                            HttpContext.Current.Items["RenderingPlaceholderKey"] += args.Rendering.Placeholder + "|";
+
+
+                            ((StringWriter) args.Writer).GetStringBuilder().Clear();
+                            args.Writer.Write(rootNode.OuterHtml);
+                        }
+                        else if (Extensions.IsContextRequestForDynamicData() && (HttpContext.Current.Request.Headers["DynamicRenderingIds"] != null && HttpContext.Current.Request.Headers["DynamicRenderingIds"].Contains(args.Rendering.UniqueId.ToString())))
+                        {
+                            ((StringWriter)args.Writer).GetStringBuilder().Clear();
+                            args.Writer.Write(rootNode.OuterHtml);
+                        }
+                        else
+                        {
+                            args.AbortPipeline();
+                        }
                     }
-
-                    HtmlNode rootNode = htmlDoc.DocumentNode.FirstChild;
-
-                    rootNode.Attributes.Add("data-renderingId", args.Rendering.UniqueId.ToString());
-                    rootNode.Attributes.Add("data-renderingIsPersonalised", renderingIsPersonalised ? "1" : "0");
-
-                    if (renderingIsPersonalised && !Extensions.IsContextRequestForDynamicData())
-                    {
-                        rootNode.InnerHtml = SpinnerHtml;
-                    }
-
-                    HttpContext.Current.Items["RenderingPlaceholderKey"] += args.Rendering.Placeholder + "|";
-
-
-                    ((StringWriter) args.Writer).GetStringBuilder().Clear();
-                    args.Writer.Write(rootNode.OuterHtml);
                 }
             }
         }

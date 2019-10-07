@@ -7,12 +7,14 @@
 });
 
 function requestDynamicContent() {
+    var dynamicRenderingIds = getDynamicRenderingIds();
     var getDynamicContentUrl = window.location.href;
     getDynamicContentUrl = getDynamicContentUrl + (window.location.href.includes('?') ? "&" : "?");
     getDynamicContentUrl = getDynamicContentUrl + "GetDynamicContent=1";
 
     $.ajax({
         url: getDynamicContentUrl,
+        beforeSend: function (xhr) { xhr.setRequestHeader('DynamicRenderingIds', dynamicRenderingIds.join("|")); },
         type: "GET",
         success: function (result) {
             injectDynamicContent(result);
@@ -31,4 +33,13 @@ function injectDynamicContent(dynamicContent) {
             $(this).replaceWith(dynamicElement);
         }
     });
+}
+
+function getDynamicRenderingIds() {
+    var dynamicRenderingIds = [];
+    $('[data-renderingispersonalised="1"]').each(function () {
+        var uid = $(this).attr("data-renderingId");
+        dynamicRenderingIds.push(uid);
+    });
+    return dynamicRenderingIds;
 }
