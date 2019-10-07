@@ -7,7 +7,7 @@ namespace Feature.CDN.Pipelines
     {
         public override void Process(ActionExecutedArgs args)
         {
-            if (Extensions.IsContextRequestForCustomization())
+            if (Extensions.IsContextRequestForDynamicData())
             {
                 args.Context.RequestContext.HttpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
             }

@@ -1,4 +1,4 @@
-﻿using Sitecore;
+﻿using System.Web;
 
 namespace Feature.CDN
 {
@@ -6,12 +6,12 @@ namespace Feature.CDN
     {
         public static bool IsPublicWebsite(this string siteName)
         {
-            return siteName == "habitat" || siteName == "website";
+            return siteName == "habitat";
         }
 
-        public static bool IsContextRequestForCustomization()
+        public static bool IsContextRequestForDynamicData()
         {
-            return Context.Request.QueryString["GetDynamicContent"] == "1";
+            return HttpContext.Current.Request.QueryString["GetDynamicContent"] == "1";
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Feature.CDN.Filters
             // todo: possible nesting issues
             foreach (HtmlNode node in htmlDoc.DocumentNode.DescendantsAndSelf()
                 .Where(x => x.Attributes
-                    .Any(y => y.Name == "data-rs" && y.Value== "1")))
+                    .Any(y => y.Name == "data-renderingispersonalised" && y.Value== "1")))
             {
                 output.AppendLine(node.OuterHtml);
             }

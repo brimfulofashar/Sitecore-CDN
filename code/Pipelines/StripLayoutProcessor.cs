@@ -10,18 +10,14 @@ namespace Feature.CDN.Pipelines
         {
             if (Context.Item != null
                 && Context.PageMode.IsNormal
-                && Context.Site.Name.IsPublicWebsite())
+                && Context.Site.Name.IsPublicWebsite()
+                && Extensions.IsContextRequestForDynamicData())
             {
-                if (Extensions.IsContextRequestForCustomization())
-                {
-                    // Create our filter
-                    var filter = new RemoveStaticMarkupFilter(
-                        args.HttpContext.Response.Filter,
-                        args.HttpContext.Response.ContentEncoding);
+                var filter = new RemoveStaticMarkupFilter(
+                    args.HttpContext.Response.Filter,
+                    args.HttpContext.Response.ContentEncoding);
 
-                    // Tell the context to use it
-                    args.HttpContext.Response.Filter = filter;
-                }
+                args.HttpContext.Response.Filter = filter;
             }
         }
     }

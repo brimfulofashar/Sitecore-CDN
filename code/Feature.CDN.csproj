@@ -113,9 +113,10 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="Filters\RemoveStaticMarkupFilter.cs" />
+    <Compile Include="Pipelines\AbortRenderingProcessor.cs" />
     <Compile Include="Pipelines\CacheControl.cs" />
     <Compile Include="Pipelines\StripContentProcessor.cs" />
-    <Compile Include="Pipelines\MarkForStrippingContentProcessor.cs" />
+    <Compile Include="Pipelines\SetCacheAndPersonalisationPropertiesProcessor.cs" />
     <Compile Include="Pipelines\StripLayoutProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

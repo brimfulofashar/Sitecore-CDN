@@ -1,15 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Web;
 using HtmlAgilityPack;
 using Sitecore;
+using Sitecore.Diagnostics;
 using Sitecore.Mvc.Pipelines.Response.RenderRendering;
 
 namespace Feature.CDN.Pipelines
 {
     public class StripContentProcessor : RenderRenderingProcessor
     {
-        private const string SpinnerHtml = "<div class='lds-spinner'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>";
+        private const string SpinnerHtml = "<div class=\"loader\"></div>";
 
         public override void Process(RenderRenderingArgs args)
         {
@@ -18,33 +20,40 @@ namespace Feature.CDN.Pipelines
                 && Context.Site.Name.IsPublicWebsite()
                 && args.Rendering != null
                 && args.Rendering.RenderingType != "Layout"
-                && HttpContext.Current.Items[$"MarkedRenderingId{args.Rendering.UniqueId}"] != null)
+                && HttpContext.Current.Items[$"RenderingIsPersonalised"] != null)
             {
+                
+                var renderingIsPersonalised = System.Convert.ToBoolean(HttpContext.Current.Items[$"RenderingIsPersonalised"]);
+
                 var existingHtmlString = args.Writer.ToString().Trim();
                 if (!string.IsNullOrEmpty(existingHtmlString))
                 {
                     var htmlDoc = new HtmlDocument();
                     htmlDoc.LoadHtml(existingHtmlString);
-                    htmlDoc.DocumentNode.FirstChild.Attributes.Add("data-rid", args.Rendering.UniqueId.ToString());
 
-                    string output;
-
-                    if (!Extensions.IsContextRequestForCustomization())
+                    if (HttpContext.Current.Items["RenderingPlaceholderKey"] != null && HttpContext.Current.Items["RenderingPlaceholderKey"].ToString().Contains(args.Rendering.Placeholder))
                     {
-                        output = htmlDoc.DocumentNode.FirstChild.OuterHtml.Replace(
-                            htmlDoc.DocumentNode.FirstChild.InnerHtml, SpinnerHtml);
-                        htmlDoc.LoadHtml(output);
+                        ((StringWriter)args.Writer).GetStringBuilder().Clear();
+                        args.Writer.Write(existingHtmlString);
 
-                        htmlDoc.DocumentNode.FirstChild.Attributes.Add("data-rs", "0");
-                    }
-                    else
-                    {
-                        htmlDoc.DocumentNode.FirstChild.Attributes.Add("data-rs", "1");
+                        return;
                     }
 
-                    output = htmlDoc.DocumentNode.FirstChild.OuterHtml;
-                    ((StringWriter)args.Writer).GetStringBuilder().Clear();
-                    args.Writer.Write(output);
+                    HtmlNode rootNode = htmlDoc.DocumentNode.FirstChild;
+
+                    rootNode.Attributes.Add("data-renderingId", args.Rendering.UniqueId.ToString());
+                    rootNode.Attributes.Add("data-renderingIsPersonalised", renderingIsPersonalised ? "1" : "0");
+
+                    if (renderingIsPersonalised && !Extensions.IsContextRequestForDynamicData())
+                    {
+                        rootNode.InnerHtml = SpinnerHtml;
+                    }
+
+                    HttpContext.Current.Items["RenderingPlaceholderKey"] += args.Rendering.Placeholder + "|";
+
+
+                    ((StringWriter) args.Writer).GetStringBuilder().Clear();
+                    args.Writer.Write(rootNode.OuterHtml);
                 }
             }
         }
