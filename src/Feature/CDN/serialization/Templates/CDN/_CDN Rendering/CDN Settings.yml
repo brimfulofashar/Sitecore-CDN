@@ -1,0 +1,14 @@
+﻿---
+ID: "b85a9759-a2dd-40a7-b7bb-888fa5649959"
+Parent: "d9ce8fcb-df32-48ea-a5f1-6e4a825b835e"
+Template: "e269fbb5-3750-427a-9149-7aa950b49301"
+Path: /sitecore/templates/Feature/CDN/_CDN Rendering/CDN Settings
+DB: master
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191014T214732Z

@@ -1,0 +1,39 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CDN", "CDN", "{7083675E-1C89-4355-BB20-AD4E7B94C05F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Symposium.Feature.CDN", "src\Feature\CDN\code\Symposium.Feature.CDN.csproj", "{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feature", "Feature", "{755F9E42-1707-4E1A-AE6D-3FD8A25118C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Debug|x64.ActiveCfg = Debug|x64
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Debug|x64.Build.0 = Debug|x64
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Release|x64.ActiveCfg = Release|x64
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7083675E-1C89-4355-BB20-AD4E7B94C05F} = {755F9E42-1707-4E1A-AE6D-3FD8A25118C0}
+		{EA2F7DBE-5B0B-4DDB-B821-8EA9F04FFCC7} = {7083675E-1C89-4355-BB20-AD4E7B94C05F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6822019A-56D3-4695-9B9E-96F9D10ECD75}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Caching.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.WindowsAzure.Storage.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.Configuration.6.0.1304.0\lib\NET45
+	EndGlobalSection
+EndGlobal
